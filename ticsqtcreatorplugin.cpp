@@ -35,7 +35,6 @@
 namespace TICSQtCreator {
 namespace Internal {
 
-static QString TICS_ENV = "";
 static QString TICSWRAPPERBIN_ENV = "";
 static const QString TICS_COMMAND = "TICS";
 static const QString IDE_PARAMETER = "-ide";
@@ -44,7 +43,6 @@ static const QString IDE_NAME = "qtcreator";
 
 TICSQtCreatorPlugin::TICSQtCreatorPlugin()
 {
-    TICS_ENV = QProcessEnvironment::systemEnvironment().value("TICS");
     TICSWRAPPERBIN_ENV = QProcessEnvironment::systemEnvironment().value("TICSWRAPPERBIN");
 
 }
@@ -104,14 +102,6 @@ bool TICSQtCreatorPlugin::initialize(const QStringList &arguments, QString *erro
     Core::ActionManager::actionContainer(Core::Constants::MENU_BAR)->addAction(analyzeFileCmd,Constants::TICS_MENU_ID);
     Core::ActionManager::actionContainer(Core::Constants::MENU_BAR)->addAction(analyzeProjectCmd,Constants::TICS_MENU_ID);
     Core::ActionManager::actionContainer(Core::Constants::MENU_BAR)->addAction(cancelTicsCmd,Constants::TICS_MENU_ID);
-
-    if(TICS_ENV == nullptr || TICS_ENV==""){
-        analyzeFileAction->setEnabled(false);
-        analyzeProjectAction->setEnabled(false);
-        cancelTicsAction->setEnabled(false);
-        QMessageBox::warning(Core::ICore::mainWindow(), tr("TICS not Configured"),
-                             tr("TICS Environment Variable not set. TICS plugin actions will be disabled."));
-    }
 
     ProjectExplorer::TaskHub::addCategory(Constants::TICS_TASK_ID, "TiCS Tasks");
 
