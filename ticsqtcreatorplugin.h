@@ -43,13 +43,11 @@ private:
 
     QAction * analyzeFileAction;
     QAction * analyzeProjectAction;
-    QAction * ticsConfigAction;
     QAction * cancelTicsAction;
     QTemporaryFile * filesList = nullptr;
 
     void analyzeFile();
     void analyzeProject();
-    void configureTICS();
     void cancelAnalysis();
     QProcess ticsProcess;
     //ProjectExplorer::Internal::CompileOutputWindow * ticsOutput = new ProjectExplorer::Internal::CompileOutputWindow(nullptr);;

@@ -6,7 +6,6 @@ namespace Constants {
 
 const char ANALYZE_FILE_ACTION_ID[] = "TICSQtCreator.AnalyzeFile";
 const char ANALYZE_PROJECT_ACTION_ID[] = "TICSQtCreator.AnalyzeProject";
-const char TICS_CONFIG_ACTION_ID[] = "TICSQtCreator.ConfigureTics";
 const char CANCEL_ANALYSIS_ACTION_ID[] = "TICSQtCreator.CancelAnalysis";
 
 const char TICS_MENU_ID[] = "TICSQtCreator.Menu";

@@ -36,7 +36,6 @@ namespace TICSQtCreator {
 namespace Internal {
 
 static QString TICS_ENV = "";
-static QString TICSCONFIG = "TICSConfig";
 static const QString TICS_COMMAND = "TICS";
 static const QString IDE_PARAMETER = "-ide";
 static const QString IDE_NAME = "qtcreator";
@@ -77,9 +76,6 @@ bool TICSQtCreatorPlugin::initialize(const QStringList &arguments, QString *erro
     cancelTicsAction = createAction(QIcon(":/icons/TI_cancel_analysis.png"),tr("Cancel TICS Analysis"),true, &TICSQtCreatorPlugin::cancelAnalysis);
     Core::Command *cancelTicsCmd = Core::ActionManager::registerAction(cancelTicsAction, Constants::CANCEL_ANALYSIS_ACTION_ID, editorManagerContext);
 
-    ticsConfigAction = createAction(QIcon(":/icons/TI_rulesoptions_configuration.gif"), tr("Configure TICS Client"),true, &TICSQtCreatorPlugin::configureTICS);
-    Core::Command *ticsConfigCmd = Core::ActionManager::registerAction(ticsConfigAction, Constants::TICS_CONFIG_ACTION_ID, editorManagerContext);
-
     cancelTicsAction->setDisabled(true);
 
     connect(&ticsProcess,  &QProcess::readyRead, this, &TICSQtCreatorPlugin::handleReadyRead);
@@ -94,7 +90,6 @@ bool TICSQtCreatorPlugin::initialize(const QStringList &arguments, QString *erro
     ticsMenu->addAction(analyzeFileCmd);
     ticsMenu->addAction(analyzeProjectCmd);
     ticsMenu->addAction(cancelTicsCmd);
-    ticsMenu->addAction(ticsConfigCmd);
 
     Core::ActionManager::actionContainer(Core::Constants::MENU_BAR)->addMenu(Core::ActionManager::actionContainer(Core::Constants::M_HELP),ticsMenu);
 
@@ -107,12 +102,10 @@ bool TICSQtCreatorPlugin::initialize(const QStringList &arguments, QString *erro
     Core::ActionManager::actionContainer(Core::Constants::MENU_BAR)->addAction(analyzeFileCmd,Constants::TICS_MENU_ID);
     Core::ActionManager::actionContainer(Core::Constants::MENU_BAR)->addAction(analyzeProjectCmd,Constants::TICS_MENU_ID);
     Core::ActionManager::actionContainer(Core::Constants::MENU_BAR)->addAction(cancelTicsCmd,Constants::TICS_MENU_ID);
-    Core::ActionManager::actionContainer(Core::Constants::MENU_BAR)->addAction(ticsConfigCmd,Constants::TICS_MENU_ID);
 
     if(TICS_ENV == nullptr || TICS_ENV==""){
         analyzeFileAction->setEnabled(false);
         analyzeProjectAction->setEnabled(false);
-        ticsConfigAction->setEnabled(false);
         cancelTicsAction->setEnabled(false);
         QMessageBox::warning(Core::ICore::mainWindow(), tr("TICS not Configured"),
                              tr("TICS Environment Variable not set. TICS plugin actions will be disabled."));
@@ -246,12 +239,6 @@ void TICSQtCreatorPlugin::handleTicsProcessStopped(int exitCode, QProcess::ExitS
     analyzeProjectAction->setEnabled(true);
     cancelTicsAction->setEnabled(false);
     filesList = nullptr;
-}
-
-void TICSQtCreatorPlugin::configureTICS(){
-    ticsOutput->popup(Core::IOutputPane::ModeSwitch);
-    ticsProcess.start(TICSCONFIG); // start returns immediately
-
 }
 
 void TICSQtCreatorPlugin::cancelAnalysis(){
