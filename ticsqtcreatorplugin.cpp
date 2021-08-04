@@ -36,6 +36,7 @@ namespace TICSQtCreator {
 namespace Internal {
 
 static QString TICS_ENV = "";
+static QString TICSWRAPPERBIN_ENV = "";
 static const QString TICS_COMMAND = "TICS";
 static const QString IDE_PARAMETER = "-ide";
 static const QString IDE_NAME = "qtcreator";
@@ -44,6 +45,7 @@ static const QString IDE_NAME = "qtcreator";
 TICSQtCreatorPlugin::TICSQtCreatorPlugin()
 {
     TICS_ENV = QProcessEnvironment::systemEnvironment().value("TICS");
+    TICSWRAPPERBIN_ENV = QProcessEnvironment::systemEnvironment().value("TICSWRAPPERBIN");
 
 }
 
@@ -161,7 +163,9 @@ void TICSQtCreatorPlugin::analyzeFile(){
     ticsOutput->resetViolationDetection();
     ticsOutput->clearContents();
     ticsOutput->popup(Core::IOutputPane::ModeSwitch);
-    ticsProcess.start(TICS_COMMAND, arguments); // start returns immediately
+
+    const QString ticsCmd = (TICSWRAPPERBIN_ENV == "") ? TICS_COMMAND : TICSWRAPPERBIN_ENV;
+    ticsProcess.start(ticsCmd, arguments); // start returns immediately
 
 }
 
@@ -211,7 +215,9 @@ void TICSQtCreatorPlugin::analyzeProject(){
     ticsOutput->resetViolationDetection();
     ticsOutput->clearContents();
     ticsOutput->popup(Core::IOutputPane::ModeSwitch);
-    ticsProcess.start(TICS_COMMAND, arguments); // start returns immediately
+
+    const QString ticsCmd = (TICSWRAPPERBIN_ENV == "") ? TICS_COMMAND : TICSWRAPPERBIN_ENV;
+    ticsProcess.start(ticsCmd, arguments); // start returns immediately
 
 }
 
