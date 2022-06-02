@@ -67,7 +67,7 @@ void TicsOutputPane::goToPrev(){
 }
 
 void TicsOutputPane::writeLine(QString line){
-    qDebug() << "write text"<<endl;
+    qDebug() << "write text" << Qt::endl;
     if(violationDetected){
         //matches violation description line after violation trace file path
         QRegularExpression re("^ {4}.*$");
@@ -91,7 +91,7 @@ void TicsOutputPane::writeLine(QString line){
             QString textAfterLink = line.mid(match.capturedEnd(0),line.size());
             QString fileLink = "<a href=\""+match.captured(1)+"#"+match.captured(2)+"\">"+match.captured(0)+"</a>";
             line = textBeforeLink + fileLink + textAfterLink;
-            qDebug()<< "Transforming fileLink in violations summary: " << match.captured(0) << endl;
+            qDebug() << "Transforming fileLink in violations summary: " << match.captured(0) << Qt::endl;
 
             violationDetected = true;
             filePath = match.captured(1);
@@ -110,8 +110,8 @@ void TicsOutputPane::resetViolationDetection()
 
 void TicsOutputPane::openFileLink(const QUrl & url)
 {
-    qInfo()<< "Opening file" << url.path() << "at line " << url.fragment();
-    Core::EditorManager::openEditorAt(url.path(),url.fragment().toInt());
+    qInfo() << "Opening file" << url.path() << "at line " << url.fragment();
+    Core::EditorManager::openEditorAt(Utils::Link(Utils::FilePath::fromString(url.path()),url.fragment().toInt()));
 }
 
 }
